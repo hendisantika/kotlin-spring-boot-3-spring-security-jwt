@@ -3,6 +3,7 @@ package com.hendisantika.kotlinspringboot3jwt.config
 import org.springframework.boot.context.properties.EnableConfigurationProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.security.crypto.password.PasswordEncoder
 
 /**
  * Created by IntelliJ IDEA.
@@ -32,4 +33,6 @@ import org.springframework.context.annotation.Configuration
     fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager =
         config.authenticationManager
 
+    @Bean
+    fun encoder(): PasswordEncoder = BCryptPasswordEncoder()
 }

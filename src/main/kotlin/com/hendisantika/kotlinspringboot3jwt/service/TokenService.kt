@@ -45,4 +45,8 @@ class TokenService(
 
         return userDetails.username == email && !isExpired(token)
     }
+
+    fun extractEmail(token: String): String? =
+        getAllClaims(token)
+            .subject
 }

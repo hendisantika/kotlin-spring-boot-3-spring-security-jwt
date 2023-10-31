@@ -7,6 +7,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.token.TokenService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
+import java.util.*
 
 /**
  * Created by IntelliJ IDEA.
@@ -71,5 +72,8 @@ class AuthenticationService(
         userDetails = user,
         expirationDate = getRefreshTokenExpiration()
     )
+
+    private fun getAccessTokenExpiration(): Date =
+        Date(System.currentTimeMillis() + jwtProperties.accessTokenExpiration)
 }
 

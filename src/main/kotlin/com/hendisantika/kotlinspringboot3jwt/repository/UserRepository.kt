@@ -40,4 +40,10 @@ class UserRepository(
             role = Role.USER,
         ),
     )
+
+    fun save(user: User): Boolean {
+        val updated = user.copy(password = encoder.encode(user.password))
+
+        return users.add(updated)
+    }
 }

@@ -46,4 +46,8 @@ class UserRepository(
 
         return users.add(updated)
     }
+
+    fun findByEmail(email: String): User? =
+        users
+            .firstOrNull { it.email == email }
 }

@@ -1,5 +1,6 @@
 package com.hendisantika.kotlinspringboot3jwt.service
 
+import com.hendisantika.kotlinspringboot3jwt.model.User
 import com.hendisantika.kotlinspringboot3jwt.repository.UserRepository
 import org.springframework.stereotype.Service
 
@@ -16,4 +17,13 @@ import org.springframework.stereotype.Service
 @Service
 class UserService(
     private val userRepository: UserRepository
-)
+) {
+    fun createUser(user: User): User? {
+        val found = userRepository.findByEmail(user.email)
+
+        return if (found == null) {
+            userRepository.save(user)
+            user
+        } else null
+    }
+}

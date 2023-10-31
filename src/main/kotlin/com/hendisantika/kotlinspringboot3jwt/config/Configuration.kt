@@ -27,4 +27,9 @@ import org.springframework.context.annotation.Configuration
                 it.setUserDetailsService(userDetailsService(userRepository))
                 it.setPasswordEncoder(encoder())
             }
+
+    @Bean
+    fun authenticationManager(config: AuthenticationConfiguration): AuthenticationManager =
+        config.authenticationManager
+
 }

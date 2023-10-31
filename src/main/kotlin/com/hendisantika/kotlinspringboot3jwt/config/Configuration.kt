@@ -1,6 +1,7 @@
 package com.hendisantika.kotlinspringboot3jwt.config
 
 import org.springframework.boot.context.properties.EnableConfigurationProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 
 /**
@@ -18,4 +19,12 @@ import org.springframework.context.annotation.Configuration
     @Bean
     fun userDetailsService(userRepository: UserRepository): UserDetailsService =
         CustomUserDetailsService(userRepository)
+
+    @Bean
+    fun authenticationProvider(userRepository: UserRepository): AuthenticationProvider =
+        DaoAuthenticationProvider()
+            .also {
+                it.setUserDetailsService(userDetailsService(userRepository))
+                it.setPasswordEncoder(encoder())
+            }
 }

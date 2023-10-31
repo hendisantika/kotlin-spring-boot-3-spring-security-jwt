@@ -49,4 +49,9 @@ class TokenService(
     fun extractEmail(token: String): String? =
         getAllClaims(token)
             .subject
+
+    fun isExpired(token: String): Boolean =
+        getAllClaims(token)
+            .expiration
+            .before(Date(System.currentTimeMillis()))
 }

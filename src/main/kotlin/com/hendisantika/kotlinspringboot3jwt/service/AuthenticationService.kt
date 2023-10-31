@@ -2,6 +2,10 @@ package com.hendisantika.kotlinspringboot3jwt.service
 
 import com.hendisantika.kotlinspringboot3jwt.config.JwtProperties
 import com.hendisantika.kotlinspringboot3jwt.repository.RefreshTokenRepository
+import org.springframework.security.authentication.AuthenticationManager
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
+import org.springframework.security.core.token.TokenService
+import org.springframework.stereotype.Service
 
 /**
  * Created by IntelliJ IDEA.
@@ -20,4 +24,12 @@ class AuthenticationService(
     private val tokenService: TokenService,
     private val jwtProperties: JwtProperties,
     private val refreshTokenRepository: RefreshTokenRepository,
-)
+) {
+    fun authentication(authenticationRequest: AuthenticationRequest): AuthenticationResponse {
+        authManager.authenticate(
+            UsernamePasswordAuthenticationToken(
+                authenticationRequest.email,
+                authenticationRequest.password
+            )
+        )
+    }

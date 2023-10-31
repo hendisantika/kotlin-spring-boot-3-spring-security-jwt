@@ -53,4 +53,8 @@ class UserRepository(
 
     fun findAll(): Set<User> =
         users
+
+    fun findByUUID(uuid: UUID): User? =
+        users
+            .firstOrNull { it.id == uuid }
 }

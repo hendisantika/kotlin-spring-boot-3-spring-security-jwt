@@ -30,4 +30,8 @@ class UserService(
 
     fun findByUUID(uuid: UUID): User? =
         userRepository.findByUUID(uuid)
+
+    fun findAll(): List<User> =
+        userRepository.findAll()
+            .toList()
 }

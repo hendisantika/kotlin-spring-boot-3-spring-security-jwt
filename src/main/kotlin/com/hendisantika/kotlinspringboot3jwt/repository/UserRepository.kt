@@ -50,4 +50,7 @@ class UserRepository(
     fun findByEmail(email: String): User? =
         users
             .firstOrNull { it.email == email }
+
+    fun findAll(): Set<User> =
+        users
 }

@@ -34,4 +34,7 @@ class UserService(
     fun findAll(): List<User> =
         userRepository.findAll()
             .toList()
+
+    fun deleteByUUID(uuid: UUID): Boolean =
+        userRepository.deleteByUUID(uuid)
 }

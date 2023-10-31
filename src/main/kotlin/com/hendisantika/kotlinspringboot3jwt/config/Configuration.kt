@@ -15,5 +15,7 @@ import org.springframework.context.annotation.Configuration
  */
 @Configuration
 @EnableConfigurationProperties(JwtProperties::class) {
-
+    @Bean
+    fun userDetailsService(userRepository: UserRepository): UserDetailsService =
+        CustomUserDetailsService(userRepository)
 }

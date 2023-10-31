@@ -66,5 +66,10 @@ class AuthenticationService(
         userDetails = user,
         expirationDate = getAccessTokenExpiration()
     )
+
+    private fun createRefreshToken(user: UserDetails) = tokenService.generate(
+        userDetails = user,
+        expirationDate = getRefreshTokenExpiration()
+    )
 }
 

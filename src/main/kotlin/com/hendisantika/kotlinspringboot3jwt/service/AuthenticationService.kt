@@ -5,6 +5,7 @@ import com.hendisantika.kotlinspringboot3jwt.repository.RefreshTokenRepository
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.token.TokenService
+import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 
 /**
@@ -60,5 +61,10 @@ class AuthenticationService(
                 null
         }
     }
+
+    private fun createAccessToken(user: UserDetails) = tokenService.generate(
+        userDetails = user,
+        expirationDate = getAccessTokenExpiration()
+    )
 }
 

@@ -2,6 +2,9 @@ package com.hendisantika.kotlinspringboot3jwt.config
 
 import com.hendisantika.kotlinspringboot3jwt.service.CustomUserDetailsService
 import com.hendisantika.kotlinspringboot3jwt.service.TokenService
+import jakarta.servlet.FilterChain
+import jakarta.servlet.http.HttpServletRequest
+import jakarta.servlet.http.HttpServletResponse
 import org.springframework.stereotype.Component
 import org.springframework.web.filter.OncePerRequestFilter
 
@@ -19,4 +22,17 @@ import org.springframework.web.filter.OncePerRequestFilter
 class JwtAuthenticationFilter(
     private val userDetailsService: CustomUserDetailsService,
     private val tokenService: TokenService,
-) : OncePerRequestFilter()
+) : OncePerRequestFilter() {
+
+    override fun doFilterInternal(
+        request: HttpServletRequest,
+        response: HttpServletResponse,
+        filterChain: FilterChain
+    ) {
+        val authHeader: String? = request.getHeader("Authorization")
+
+        if (authHeader.doesNotContainBearerToken()) {
+            filterChain.doFilter(request, response)
+            return
+        }
+    }

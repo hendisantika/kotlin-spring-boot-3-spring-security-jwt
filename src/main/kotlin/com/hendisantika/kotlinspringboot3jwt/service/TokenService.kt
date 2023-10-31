@@ -1,6 +1,7 @@
 package com.hendisantika.kotlinspringboot3jwt.service
 
 import com.hendisantika.kotlinspringboot3jwt.config.JwtProperties
+import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.security.Keys
 import org.springframework.security.core.userdetails.UserDetails
@@ -54,4 +55,14 @@ class TokenService(
         getAllClaims(token)
             .expiration
             .before(Date(System.currentTimeMillis()))
+
+    private fun getAllClaims(token: String): Claims {
+        val parser = Jwts.parser()
+            .verifyWith(secretKey)
+            .build()
+
+        return parser
+            .parseSignedClaims(token)
+            .payload
+    }
 }

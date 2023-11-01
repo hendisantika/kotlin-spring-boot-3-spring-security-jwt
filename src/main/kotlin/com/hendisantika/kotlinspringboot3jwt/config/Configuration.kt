@@ -24,7 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder
  * To change this template use File | Settings | File Templates.
  */
 @Configuration
-@EnableConfigurationProperties(JwtProperties::class) {
+@EnableConfigurationProperties(JwtProperties::class)
+class Configuration {
     @Bean
     fun userDetailsService(userRepository: UserRepository): UserDetailsService =
         CustomUserDetailsService(userRepository)

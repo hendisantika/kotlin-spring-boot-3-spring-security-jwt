@@ -1,10 +1,11 @@
 package com.hendisantika.kotlinspringboot3jwt.service
 
 import com.hendisantika.kotlinspringboot3jwt.config.JwtProperties
+import com.hendisantika.kotlinspringboot3jwt.controller.auth.AuthenticationRequest
+import com.hendisantika.kotlinspringboot3jwt.controller.auth.AuthenticationResponse
 import com.hendisantika.kotlinspringboot3jwt.repository.RefreshTokenRepository
 import org.springframework.security.authentication.AuthenticationManager
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
-import org.springframework.security.core.token.TokenService
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.*
@@ -35,19 +36,18 @@ class AuthenticationService(
                 authenticationRequest.password
             )
         )
+        val user = userDetailsService.loadUserByUsername(authenticationRequest.email)
+
+        val accessToken = createAccessToken(user)
+        val refreshToken = createRefreshToken(user)
+
+        refreshTokenRepository.save(refreshToken, user)
+
+        return AuthenticationResponse(
+            accessToken = accessToken,
+            refreshToken = refreshToken
+        )
     }
-
-    val user = userDetailsService.loadUserByUsername(authenticationRequest.email)
-
-    val accessToken = createAccessToken(user)
-    val refreshToken = createRefreshToken(user)
-
-    refreshTokenRepository.save(refreshToken, user)
-
-    return AuthenticationResponse(
-    accessToken = accessToken,
-    refreshToken = refreshToken
-    )
 
     fun refreshAccessToken(refreshToken: String): String? {
         val extractedEmail = tokenService.extractEmail(refreshToken)

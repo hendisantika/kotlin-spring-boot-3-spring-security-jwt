@@ -2,10 +2,7 @@ package com.hendisantika.kotlinspringboot3jwt.controller.user
 
 import com.hendisantika.kotlinspringboot3jwt.service.UserService
 import org.springframework.http.HttpStatus
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 
 /**
@@ -30,4 +27,8 @@ class UserController(
             ?.toResponse()
             ?: throw ResponseStatusException(HttpStatus.BAD_REQUEST, "Cannot create user.")
 
+    @GetMapping
+    fun listAll(): List<UserResponse> =
+        userService.findAll()
+            .map { it.toResponse() }
 }

@@ -1,5 +1,6 @@
 package com.hendisantika.kotlinspringboot3jwt.controller.user
 
+import com.hendisantika.kotlinspringboot3jwt.model.User
 import com.hendisantika.kotlinspringboot3jwt.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
@@ -50,4 +51,10 @@ class UserController(
         else
             throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.")
     }
+
+    private fun User.toResponse(): UserResponse =
+        UserResponse(
+            uuid = this.id,
+            email = this.email,
+        )
 }

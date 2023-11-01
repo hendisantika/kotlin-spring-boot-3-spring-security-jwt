@@ -2,6 +2,7 @@ package com.hendisantika.kotlinspringboot3jwt.controller.user
 
 import com.hendisantika.kotlinspringboot3jwt.service.UserService
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
 import java.util.*
@@ -38,4 +39,15 @@ class UserController(
         userService.findByUUID(uuid)
             ?.toResponse()
             ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.")
+
+    @DeleteMapping("/{uuid}")
+    fun deleteByUUID(@PathVariable uuid: UUID): ResponseEntity<Boolean> {
+        val success = userService.deleteByUUID(uuid)
+
+        return if (success)
+            ResponseEntity.noContent()
+                .build()
+        else
+            throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.")
+    }
 }

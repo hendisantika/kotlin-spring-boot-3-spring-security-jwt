@@ -1,5 +1,6 @@
 package com.hendisantika.kotlinspringboot3jwt.controller.user
 
+import com.hendisantika.kotlinspringboot3jwt.model.Role
 import com.hendisantika.kotlinspringboot3jwt.model.User
 import com.hendisantika.kotlinspringboot3jwt.service.UserService
 import org.springframework.http.HttpStatus
@@ -56,5 +57,13 @@ class UserController(
         UserResponse(
             uuid = this.id,
             email = this.email,
+        )
+
+    private fun UserRequest.toModel(): User =
+        User(
+            id = UUID.randomUUID(),
+            email = this.email,
+            password = this.password,
+            role = Role.USER,
         )
 }

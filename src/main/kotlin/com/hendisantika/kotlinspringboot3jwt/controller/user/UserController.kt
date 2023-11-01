@@ -4,6 +4,7 @@ import com.hendisantika.kotlinspringboot3jwt.service.UserService
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.server.ResponseStatusException
+import java.util.*
 
 /**
  * Created by IntelliJ IDEA.
@@ -31,4 +32,10 @@ class UserController(
     fun listAll(): List<UserResponse> =
         userService.findAll()
             .map { it.toResponse() }
+
+    @GetMapping("/{uuid}")
+    fun findByUUID(@PathVariable uuid: UUID): UserResponse =
+        userService.findByUUID(uuid)
+            ?.toResponse()
+            ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found.")
 }

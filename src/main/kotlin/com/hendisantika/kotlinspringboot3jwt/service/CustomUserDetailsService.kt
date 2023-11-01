@@ -1,7 +1,7 @@
 package com.hendisantika.kotlinspringboot3jwt.service
 
-import com.hendisantika.kotlinspringboot3jwt.model.User
 import com.hendisantika.kotlinspringboot3jwt.repository.UserRepository
+import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
 import org.springframework.security.core.userdetails.UsernameNotFoundException
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Service
  * To change this template use File | Settings | File Templates.
  */
 
-typealias ApplicationUser = User
+typealias ApplicationUser = com.hendisantika.kotlinspringboot3jwt.model.User
 
 @Service
 class CustomUserDetailsService(

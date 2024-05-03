@@ -20,7 +20,7 @@ import java.util.*
  * To change this template use File | Settings | File Templates.
  */
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/users")
 class UserController(
     private val userService: UserService
 ) {

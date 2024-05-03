@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController
  * To change this template use File | Settings | File Templates.
  */
 @RestController
-@RequestMapping("/api/article")
+@RequestMapping("/api/articles")
 class ArticleController(
     private val articleService: ArticleService
 ) {

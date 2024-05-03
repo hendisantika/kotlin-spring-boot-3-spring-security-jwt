@@ -1,4 +1,4 @@
 jwt:
-  key: ${JWT_KEY:KOTLIN}
+  key: ${JWT_KEY:JUJUTSU_KAISEN_SHIBUYA_ARC_ITADORI_YUJI}
   access-token-expiration: 3600000
   refresh-token-expiration: 86400000

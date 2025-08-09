@@ -66,3 +66,183 @@ with:
    rules according to your application’s requirements. You can configure which URLs need authentication, what roles are
    required, etc.
 
+## API Usage Examples
+
+This section provides practical examples of how to interact with the API using curl commands and HTTP requests.
+
+### Authentication
+
+#### Login and Get JWT Tokens
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:8080/api/auth \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "user@example.com",
+    "password": "password123"
+  }'
+```
+
+**HTTP Request:**
+
+```
+POST /api/auth HTTP/1.1
+Host: localhost:8080
+Content-Type: application/json
+
+{
+  "email": "user@example.com",
+  "password": "password123"
+}
+```
+
+**Response:**
+
+```json
+{
+  "accessToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+  "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+}
+```
+
+### User Management
+
+#### Create a New User
+
+**Request:**
+
+```bash
+curl -X POST http://localhost:8080/api/users \
+  -H "Content-Type: application/json" \
+  -d '{
+    "email": "newuser@example.com",
+    "password": "securepassword"
+  }'
+```
+
+**Response:**
+
+```json
+{
+  "uuid": "123e4567-e89b-12d3-a456-426614174000",
+  "email": "newuser@example.com"
+}
+```
+
+#### Get All Users (Admin Required)
+
+**Request:**
+
+```bash
+curl -X GET http://localhost:8080/api/users \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+**Response:**
+
+```json
+[
+  {
+    "uuid": "123e4567-e89b-12d3-a456-426614174000",
+    "email": "user1@example.com"
+  },
+  {
+    "uuid": "456e7890-e89b-12d3-a456-426614174001",
+    "email": "user2@example.com"
+  }
+]
+```
+
+#### Get User by UUID
+
+**Request:**
+
+```bash
+curl -X GET http://localhost:8080/api/users/123e4567-e89b-12d3-a456-426614174000 \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+**Response:**
+
+```json
+{
+  "uuid": "123e4567-e89b-12d3-a456-426614174000",
+  "email": "user@example.com"
+}
+```
+
+#### Delete User by UUID
+
+**Request:**
+
+```bash
+curl -X DELETE http://localhost:8080/api/users/123e4567-e89b-12d3-a456-426614174000 \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+**Response:** `204 No Content`
+
+### Articles
+
+#### Get All Articles (Authentication Required)
+
+**Request:**
+
+```bash
+curl -X GET http://localhost:8080/api/articles \
+  -H "Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+```
+
+**HTTP Request:**
+
+```
+GET /api/articles HTTP/1.1
+Host: localhost:8080
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+```
+
+**Response:**
+
+```json
+[
+  {
+    "id": "789e0123-e89b-12d3-a456-426614174002",
+    "title": "Introduction to Spring Security",
+    "content": "Spring Security is a powerful authentication and authorization framework..."
+  },
+  {
+    "id": "012e3456-e89b-12d3-a456-426614174003",
+    "title": "JWT Tokens Explained",
+    "content": "JWT tokens are a secure way to transmit information between parties..."
+  }
+]
+```
+
+### Error Responses
+
+When authentication fails or access is denied, you'll receive error responses:
+
+**401 Unauthorized:**
+
+```json
+{
+  "timestamp": "2023-10-31T15:52:00.000+00:00",
+  "status": 401,
+  "error": "Unauthorized",
+  "path": "/api/articles"
+}
+```
+
+**403 Forbidden:**
+
+```json
+{
+  "timestamp": "2023-10-31T15:52:00.000+00:00",
+  "status": 403,
+  "error": "Forbidden",
+  "path": "/api/users"
+}
+```
+

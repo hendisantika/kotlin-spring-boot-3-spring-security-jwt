@@ -25,9 +25,9 @@ dependencies {
     testImplementation("org.springframework.boot:spring-boot-starter-test")
 
     // Security
-    implementation("io.jsonwebtoken:jjwt-api:0.12.7")
-    implementation("io.jsonwebtoken:jjwt-impl:0.12.7")
-    implementation("io.jsonwebtoken:jjwt-jackson:0.12.7")
+    implementation("io.jsonwebtoken:jjwt-api:0.13.0")
+    implementation("io.jsonwebtoken:jjwt-impl:0.13.0")
+    implementation("io.jsonwebtoken:jjwt-jackson:0.13.0")
     implementation("org.springframework.boot:spring-boot-starter-security")
     testImplementation("org.springframework.security:spring-security-test")
 }

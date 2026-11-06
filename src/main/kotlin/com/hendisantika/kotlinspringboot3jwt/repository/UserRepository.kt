@@ -24,28 +24,31 @@ class UserRepository(
         User(
             id = UUID.randomUUID(),
             email = "email-1@gmail.com",
-            password = encoder.encode("pass1"),
+            password = hash("pass1"),
             role = Role.USER,
         ),
         User(
             id = UUID.randomUUID(),
             email = "email-2@gmail.com",
-            password = encoder.encode("pass2"),
+            password = hash("pass2"),
             role = Role.ADMIN,
         ),
         User(
             id = UUID.randomUUID(),
             email = "email-3@gmail.com",
-            password = encoder.encode("pass3"),
+            password = hash("pass3"),
             role = Role.USER,
         ),
     )
 
     fun save(user: User): Boolean {
-        val updated = user.copy(password = encoder.encode(user.password))
+        val updated = user.copy(password = hash(user.password))
 
         return users.add(updated)
     }
+
+    private fun hash(rawPassword: String): String =
+        requireNotNull(encoder.encode(rawPassword)) { "Password encoder returned null" }
 
     fun findByEmail(email: String): User? =
         users

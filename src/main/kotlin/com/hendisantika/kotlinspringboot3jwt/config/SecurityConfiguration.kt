@@ -34,9 +34,9 @@ class SecurityConfiguration(
             .csrf { it.disable() }
             .authorizeHttpRequests {
                 it
-                    .requestMatchers("/api/auth", "api/auth/refresh", "/error").permitAll()
+                    .requestMatchers("/api/auth", "/api/auth/refresh", "/error").permitAll()
                     .requestMatchers(HttpMethod.POST, "/api/users").permitAll()
-                    .requestMatchers("/api/users**").hasRole("ADMIN")
+                    .requestMatchers("/api/users", "/api/users/**").hasRole("ADMIN")
                     .anyRequest().fullyAuthenticated()
             }
             .sessionManagement {

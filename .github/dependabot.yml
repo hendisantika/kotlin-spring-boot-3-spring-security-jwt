@@ -1,13 +1,71 @@
 version: 2
 updates:
+  # Gradle dependencies, plugins, and the Gradle wrapper
   - package-ecosystem: gradle
     directory: "/"
     schedule:
       interval: daily
-      time: '05:00'
+      time: "05:00"
       timezone: Asia/Jakarta
     open-pull-requests-limit: 10
-  - package-ecosystem: "github-actions"
+    target-branch: main
+    labels:
+      - "dependencies"
+      - "gradle"
+    assignees:
+      - "hendisantika"
+    commit-message:
+      prefix: "build(deps)"
+      prefix-development: "build(deps-dev)"
+      include: scope
+    groups:
+      # Keep the Kotlin compiler and its Gradle plugins in lockstep
+      kotlin:
+        patterns:
+          - "org.jetbrains.kotlin*"
+          - "org.jetbrains.kotlin.*"
+          - "org.jetbrains.kotlinx*"
+      # Spring Boot plugin and Spring dependency management
+      spring:
+        patterns:
+          - "org.springframework*"
+          - "io.spring.dependency-management"
+      # JJWT artifacts are released together and must share a version
+      jjwt:
+        patterns:
+          - "io.jsonwebtoken*"
+      jackson:
+        patterns:
+          - "tools.jackson*"
+          - "com.fasterxml.jackson*"
+      # Everything else: batch minor and patch bumps into a single PR
+      minor-and-patch:
+        update-types:
+          - "minor"
+          - "patch"
+
+  # GitHub Actions used in .github/workflows
+  - package-ecosystem: github-actions
     directory: "/"
     schedule:
-      interval: "daily"
+      interval: daily
+      time: "05:00"
+      timezone: Asia/Jakarta
+    open-pull-requests-limit: 10
+    target-branch: main
+    labels:
+      - "dependencies"
+      - "github_actions"
+    assignees:
+      - "hendisantika"
+    commit-message:
+      prefix: "ci(deps)"
+      include: scope
+    groups:
+      # gradle/actions ships setup-gradle and dependency-submission from one release
+      gradle-actions:
+        patterns:
+          - "gradle/actions*"
+      github-actions:
+        patterns:
+          - "actions/*"

@@ -1,5 +1,115 @@
 # kotlin-spring-boot-3-spring-security-jwt
 
+[![Java CI with Gradle](https://github.com/hendisantika/kotlin-spring-boot-3-spring-security-jwt/actions/workflows/gradle.yml/badge.svg)](https://github.com/hendisantika/kotlin-spring-boot-3-spring-security-jwt/actions/workflows/gradle.yml)
+![JDK](https://img.shields.io/badge/JDK-25-orange?logo=openjdk)
+![Kotlin](https://img.shields.io/badge/Kotlin-2.4-7F52FF?logo=kotlin)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1-6DB33F?logo=springboot)
+![Gradle](https://img.shields.io/badge/Gradle-9.8-02303A?logo=gradle)
+
+REST API secured with **Spring Security** and **JWT** (access + refresh tokens), written in **Kotlin**.
+
+> The repository name still says "Spring Boot 3" for historical reasons; the project now runs on **Spring Boot 4** and
+> **JDK 25**.
+
+## Tech Stack
+
+| Component             | Version                                    |
+|-----------------------|--------------------------------------------|
+| JDK (toolchain)       | 25                                         |
+| Kotlin                | 2.4.x                                      |
+| Spring Boot           | 4.1.x (Spring Framework 7, Security 7)     |
+| JWT library           | [JJWT](https://github.com/jwtk/jjwt) 0.13.x |
+| JSON                  | Jackson 3 (`tools.jackson.module:jackson-module-kotlin`) |
+| Build tool            | Gradle 9.8 (wrapper, Kotlin DSL)           |
+
+## Prerequisites
+
+- **JDK 25** installed (e.g. [Eclipse Temurin](https://adoptium.net/)). The build uses a Gradle Java toolchain, so
+  `JAVA_HOME` must point to JDK 25 or Gradle must be able to locate one.
+- No need to install Gradle; use the included wrapper (`./gradlew`).
+
+Check your Java version:
+
+```bash
+java -version   # should print 25.x
+```
+
+## Getting Started
+
+```bash
+# Clone
+git clone https://github.com/hendisantika/kotlin-spring-boot-3-spring-security-jwt.git
+cd kotlin-spring-boot-3-spring-security-jwt
+
+# Build and run tests
+./gradlew build
+
+# Run the application (http://localhost:8080)
+./gradlew bootRun
+
+# ...or run the packaged jar
+java -jar build/libs/kotlin-spring-boot-3-jwt-0.0.1-SNAPSHOT.jar
+```
+
+### Configuration
+
+Settings live in `src/main/resources/application.yml`:
+
+| Property                       | Default                                  | Description                                  |
+|--------------------------------|------------------------------------------|----------------------------------------------|
+| `jwt.key`                      | `${JWT_KEY:...}`                         | HMAC signing key (override with `JWT_KEY`)   |
+| `jwt.access-token-expiration`  | `3600000` (1 hour)                       | Access token lifetime in milliseconds        |
+| `jwt.refresh-token-expiration` | `86400000` (24 hours)                    | Refresh token lifetime in milliseconds       |
+
+Always provide your own secret in real environments:
+
+```bash
+JWT_KEY="a-long-random-secret-of-at-least-32-bytes" ./gradlew bootRun
+```
+
+### Demo Users
+
+Users are stored in memory and seeded on startup:
+
+| Email               | Password | Role  |
+|---------------------|----------|-------|
+| `email-1@gmail.com` | `pass1`  | USER  |
+| `email-2@gmail.com` | `pass2`  | ADMIN |
+| `email-3@gmail.com` | `pass3`  | USER  |
+
+### Endpoints Overview
+
+| Method   | Path                | Access                    |
+|----------|---------------------|---------------------------|
+| `POST`   | `/api/auth`         | Public (login)            |
+| `POST`   | `/api/users`        | Public (register)         |
+| `GET`    | `/api/users`        | `ADMIN`                   |
+| `GET`    | `/api/users/{uuid}` | `ADMIN`                   |
+| `DELETE` | `/api/users/{uuid}` | `ADMIN`                   |
+| `GET`    | `/api/articles`     | Any authenticated user    |
+
+## Project Structure
+
+```
+src/main/kotlin/com/hendisantika/kotlinspringboot3jwt
+├── config       # Security filter chain, JWT filter, JWT properties, beans
+├── controller   # auth, user and article REST controllers + DTOs
+├── model        # User, Role, Article
+├── repository   # In-memory user, article and refresh-token stores
+└── service      # Token, authentication, user and article services
+```
+
+## CI/CD & Dependency Updates
+
+- **GitHub Actions** (`.github/workflows/gradle.yml`) builds and tests the project on **Temurin JDK 25** for every push
+  and pull request to `main`, and submits the Gradle dependency graph on pushes so Dependabot alerts cover all
+  dependencies. It can also be triggered manually (`workflow_dispatch`).
+- **Dependabot** (`.github/dependabot.yml`) checks Gradle dependencies and GitHub Actions daily at 05:00 (Asia/Jakarta).
+  Related updates are grouped into single PRs (Kotlin, Spring, JJWT, Jackson, `gradle/actions`, `actions/*`, plus
+  remaining minor/patch bumps), labelled, and use conventional commit prefixes (`build(deps)` / `ci(deps)`).
+
+## Overview
+
 Well, in our project we will implement a REST API for articles and users.
 
 Articles will be visible to any user who successfully authenticates using the JWT access token.
